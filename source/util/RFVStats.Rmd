@@ -1,0 +1,59 @@
+---
+title: "Summary Rig State Classifier Performance"
+---
+
+### Summary Statistics - EDR_Inclination Removed.
+
+```{r, echo=FALSE}
+# Code last modified April 6, 2016
+filename <- "C:/Users/Fred.Seymour/Rcode/master/batch/multiClassify/RFVotesV2.txt"
+rfc <- read.table(file=filename, header=FALSE, sep=" ")
+rfc1 <- as.data.frame(rfc[,c(2,5,8,11,14,17,20,23)])
+names(rfc1) <- c("Vote","Rig","Wellnum","Date","Obs","Drill","Trip","MaxDepth")
+```
+
+Filename = `r filename`   
+Loaded `r nrow(rfc1)` well rig classification summary results   
+Rigs = (`r unique(rfc1$Rig)[order(unique(rfc1$Rig))]`)   
+Wellnums = (`r unique(rfc1$Wellnum)`)
+
+```{r, echo=FALSE}
+hist(rfc1$Vote, breaks=10,main="Histogram of Rig State Confidence Votes",
+     xlab="Rig State Overall RF vote confidence values")
+abline(v=mean(rfc1$Vote,na.rm=T),lwd=5,col='blue')
+legend("topleft",sprintf("Mean=%.3f",mean(rfc1$Vote,na.rm=T)),pch=15,col='blue')
+
+rfc1$DrillProp <- rfc1$Drill/rfc1$Obs
+hist(rfc1$DrillProp, breaks=10,main="Histogram of 'Drilling' Rig State Proportions",
+     xlab="Proportion of 'Drilling' Rig States")
+abline(v=mean(rfc1$DrillProp,na.rm=T),lwd=5,col='green')
+legend("topleft",sprintf("Mean=%.3f",mean(rfc1$DrillProp,na.rm=T)),pch=15,col='green')
+
+rfc1$TripProp <- rfc1$Trip/rfc1$Obs
+hist(rfc1$TripProp, breaks=10,main="Histogram of 'Tripping' Rig State Proportions",
+     xlab="Proportion of 'Tripping' Rig States")
+abline(v=mean(rfc1$TripProp,na.rm=T),lwd=5,col='green')
+legend("topleft",sprintf("Mean=%.3f",mean(rfc1$TripProp,na.rm=T)),pch=15,col='green')
+
+rfc1$OtherProp <- (rfc1$Obs - rfc1$Drill - rfc1$Trip)/rfc1$Obs
+hist(rfc1$OtherProp, breaks=10,main="Histogram of 'Other' Rig State Proportions",
+     xlab="Proportion of 'Other' Rig States")
+abline(v=mean(rfc1$OtherProp,na.rm=T),lwd=5,col='green')
+legend("topleft",sprintf("Mean=%.3f",mean(rfc1$OtherProp,na.rm=T)),pch=15,col='green')
+
+hist(rfc1$MaxDepth, breaks=10,main="Histogram of Maximum Hole Depths",
+     xlab="Maximum Hole Depths")
+abline(v=mean(rfc1$MaxDepth,na.rm=T),lwd=5,col='red')
+legend("topleft",sprintf("Mean=%.0f",mean(rfc1$MaxDepth,na.rm=T)),pch=15,col='red')
+
+# options(scipen=5)
+# plot(rfc1$Vote,rfc1$Obs,
+#      main='RF Votes vs Observations',
+#      xlab='Overall RF Confidence Votes',
+#      ylab='Number of Observations')
+# 
+# plot(rfc1$Vote,rfc1$OtherProp,
+#      main="RF Votes vs 'Other' rig states",
+#      xlab='Overall RF Confidence Votes',
+#      ylab="Porportion of 'Other' rig states")
+```

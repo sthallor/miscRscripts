@@ -1,0 +1,75 @@
+Program Data Clean V3.0 2/15/2017
+
+Title  [dclean for real time prediction 4/30/2017]
+
+Input Filenames (one file per line) for data cleaning
+[ignored.csv]
+
+Clean Data Output Filename Appendix  [ignored.csv]
+Program Output Log Filename Appendix [ignored.txt]
+
+Input file is raw Historian data needing reshape (Yes/No)   [No]
+Time Column Name                                            [tenseconds_epoch]
+Average values over constant time interval (Yes/No)         [Yes]
+Constant time interval in seconds                           [10]
+Constant time interval offset in seconds                    [0]
+Max timespan (sec) for inserting missing observations       [1000]
+Convert to UTC timezone if UTC offset available (Yes/No)    [No]
+Verbose logfile output (Yes/No)                             [No]
+
+Save all columns (Yes=all, No=save only selected columns)   [Yes]
+Global numeric value or code indicating missing value (NA)  [-999.25]
+Global numeric value below which set to missing (NA)        [-100000]
+Global numeric value above which set to missing (NA)        [100000]
+Min number of unique values to be considered continuous     [1]
+Min data density to be considered continuous                [0.05]
+Max timespan (sec) for interpolating continuous variables   [600]
+
+Non-standard predictor variable name conversion to standard names
+Option to overwrite standard predictor variable name if it already exists
+Non-standard name                        Standard name               Overwrite
+[ensign_ac_rig/dw/block_height]          [block_height]              [Yes] # For Historian Database
+[ensign_ac_rig/abb_dw/igbt_temp]         [igbt_temp]                 [Yes]
+[ensign_ac_rig/abb_dw/dc_bus_voltage]    [dc_bus_voltage]            [Yes]
+[ensign_ac_rig/abb_dw/output_voltage]    [output_voltage]            [Yes]
+[ensign_ac_rig/abb_dw/current]           [current]                   [Yes]
+[ensign_ac_rig/abb_dw/torque]            [torque]                    [Yes]
+[ensign_ac_rig/abb_dw/speed]             [speed]                     [Yes]
+[ensign_ac_rig/abb_dw/frequency]         [frequency]                 [Yes]
+[ensign_ac_rig/hmi_ai/hookload]          [hookload]                  [Yes]
+[edr_data/bit_depth]                     [bit_depth]                 [Yes]
+[BlockHeight]                            [block_height]              [Yes] # For Ignition Database
+[IGBT_temp]                              [igbt_temp]                 [Yes]
+[DC_Bus]                                 [dc_bus_voltage]            [Yes]
+[dw_output]                              [output_voltage]            [Yes]
+[dw_current]                             [current]                   [Yes]
+[Torque]                                 [torque]                    [Yes]
+[dw_speed]                               [speed]                     [Yes]
+[dw_frequency]                           [frequency]                 [Yes]
+[Hookload]                               [hookload]                  [Yes]
+
+Convert Units Of Measure (UOM) to Standard Units (yes/No)       [No]
+UOMType inserted into reshaped UOM column name(s) with historian data
+DColName                   UOMColName         UOMType        InputUnit OutputUnit Formula
+[EDR_BlockHeight]          [BlockHeight_UOM]  [BlockHeight]  [feet]    [meters]   [meters = feet * 0.3048] 
+
+Selected columns for continuous variable cleaning parameters
+Column Name, Min=values below this set to NA, Floor=values below this set to floor
+Ceiling=values above this set to ceiling, Max=values above this set to NA
+MaxTime=max timespan for interpolating/extrapolating values
+NANumber=replace all NA values with numeric value listed (NA for none)
+Column Name                Min       Floor      Ceiling    Max      MaxTimespan NANumber
+[block_height]             [-10000]  [-10000]   [10000]    [10000]  [600]        [NA]
+[igbt_temp]                [0]       [0]        [250]      [250]    [600]        [NA]
+[dc_bus_voltage]           [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+[output_voltage]           [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+[current]                  [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+[torque]                   [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+[speed]                    [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+[frequency]                [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+[hookload]                 [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+[bit_depth]                [-100000] [-100000]  [100000]   [100000] [600]        [NA]
+
+Selected columns for discrete variable cleaning parameters
+[ensign_ac_rig/console/dq/tilt_rev]
+

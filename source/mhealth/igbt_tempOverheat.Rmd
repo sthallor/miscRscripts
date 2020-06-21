@@ -1,0 +1,48 @@
+---
+title: "IGBT random forest imminent critical event predictions"
+author: "Fred H Seymour"
+date: "February 26, 2017"
+output: html_document
+---
+
+###Summary
+An exploratory random forest model was produced to test the ability to predict IGBT temperature categories twenty minutes in advance.  The purpose of this is to give the drilling team an advance warning of when the IGBT could reach a critical temperature of over 100C.  The training and test dataset used was the historian abb_dw folder from DR156 in 2016.
+
+###Training and Testing
+
+The data was downloaded from the Historian and split into a training and test dataset.  The training dataset was used to build a random forest model that predicts IGBT maximum temperatures between 10 and 20 minutes into the future.  Then the test dataset was used to compare the predicted future maximum IGBT temperatures against the actual future maximum IGBT temperatures.   
+   
+With the training data, less than 1% of the IGBT temperature values are above the critical threshold of 100C.  Less than 10% of the future IGBT maximum temperatures between 10 and 20 minutes into the future are above 100C.  This 'unbalanced' dataset skews the random forest training towards predicting below critical future IGBT temperatures in order to minimize the overall error.  This is mitigated with a stratified sampling approach for the training dataset.  An equal number of greater than 100C and less than 100C future max IGBT temperature observations are used.    
+   
+Getting from predicted future max IGBT temperatures to whether they are likely to exceed the 100C threshold involves the additional step of looking at random forest 'votes'.  Each individual random forest tree prediction that exceeds 100C is counted as a positive vote and each tree prediction below 100C is counted as a negative vote.  If the random forest vote proportion is above a given threshold, then the prediction is that the future max IGBT temperature will exceed 100C.  
+   
+This threshold proportion of random forest votes is used to balance 'false positives' that predict a critical future temperature when there will be none and 'false negatives' that predict a non-critical future temperature when there will be one. With the test dataset where predictions can be compared with actuals, the threshold is chosen to minimize the sum of false positives and false negatives.  
+   
+The random forest training run and result with selected vote threshold is shown below.
+
+
+```{r, echo=FALSE, fig.width=11, fig.height=10}
+options(width=96)
+options(warn=-1)
+
+sourceDir <- "/home/fhs/Rcode/Ensign/"
+source(paste0(sourceDir,"mhealth/igbt_overheat2.R"))
+```
+
+### Visual Display of Results
+
+The strip chart program was modified to display the max temperature classifications testing results.  Each of the three  horizontal traces is as follows:
+
+1) The block height color coded by the actual igbt temperature classifications (grey=less than 100C, red=greater than 100C).   
+
+2) The proportion of random forest votes indicating a future max IGBT temperature greater than 100C.  These are color coded by whether the future max IGBT temperature is predicted to exceed 100C (i.e the vote proportion exceeds the threshold).     
+
+3) The actual and future IGBT temperatures.  The actual temperature is grey when below 100C and red when above 100C.  The actual future max IGBT temperature is the green trace.  The predicted IGBT temperature, average of the random forest tree predictions is in yellow.   
+
+```{r, echo=FALSE, fig.width=11, fig.height=10}
+options(width=96)
+options(warn=-1)
+
+sourceDir <- "/home/fhs/Rcode/Ensign/"
+source(paste0(sourceDir,"mhealth/plot.R"))
+```

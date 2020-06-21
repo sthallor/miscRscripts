@@ -1,0 +1,47 @@
+---
+title: "IGBT random forest imminent critical event predictions"
+author: "Fred H Seymour"
+date: "February 22, 2017"
+output: html_document
+---
+
+###Summary
+An exploratory random forest model was produced to test the ability to predict IGBT temperature categories ten minutes in advance.  The purpose of this is to give the drilling team an advance warning of when the IGBT could reach a critical temperature.  The training and test dataset used was the historian abb_dw folder from DR156.
+
+###Training and Testing
+
+The data was downloaded from the Historian and split into a training and test dataset.  The training dataset was used to build a random forest model that predicts likely critical IGBT temperature events.  Then the test dataset was used to predict maximum IGBT temperature classifications up to 10 minutes into the future and compare with actual temperature classifications  
+
+```{r, echo=FALSE, fig.width=11, fig.height=10}
+options(width=96)
+options(warn=-1)
+
+sourceDir <- "C:/Users/Fred.Seymour/Rcode/master/"
+source(paste0(sourceDir,"mhealth/igbt_overheat1.R"))
+```
+
+### Visual Display of Results
+
+The strip chart program was modified to display the max temperature classifications testing results.  Each of the seven horizontal traces is as follows:
+
+1) The block height color coded by the actual igbt temperature classifications (blue=cool less than 50C, green=warm between 50C and 80C, hot=yellow between 80C and 100C, and very hot greater than 100C).   
+
+2) The actual igbt temperatures with the temperature color codingC.     
+
+3) The random forest vote proportion for very hot.  The red segments indicate when this is the selected temperature classification greater than 100C.   
+
+4) the color coded prediced future max temperature classifications.  Those that match the actual future match classification are on the upper 'good' line and those that do not match and that are incorrect are on the lower 'miss' line.   
+
+5) The color coded actual future max temperature classifications with the same color coding.
+
+The block height trace indicates that the dense up & down activity that is indicative of tripping is when the temperature tends to be hot and very hot.  Maybe the 'Tripping Out' activity has more 'very hot' classifications and the 'Tripping In' activity has more 'hot' classifications.
+
+
+
+```{r, echo=FALSE, fig.width=11, fig.height=10}
+options(width=96)
+options(warn=-1)
+
+sourceDir <- "C:/Users/Fred.Seymour/Rcode/master/"
+source(paste0(sourceDir,"mhealth/plot.R"))
+```

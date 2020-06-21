@@ -1,0 +1,15 @@
+Program Offset V3.0 Program Parameters 2/15/2017
+
+Title  [Historian to EDR time offset 4/03/2017]
+
+# Historian .csv Filename         [C:/Users/Fred.Seymour/Rcode/TestData/offset/offset_Historian_Rig774_reshape_clean.csv]
+# EDR .csv Filename               [C:/Users/Fred.Seymour/Rcode/TestData/offset/offset_EDR_Rig774_clean.csv]
+Historian .csv Filename         [C:/Users/Fred.Seymour/EDR_Data/170825_Testing/170924_Well427401/input_historian_file_reshape_clean.csv]
+EDR .csv Filename               [C:/Users/Fred.Seymour/EDR_Data/170825_Testing/170924_Well427401/input_EDR_file_clean_output.csv]
+Output log .txt Filename        []
+Plot correlation .png Filename  []
+
+Historian Block Height Tag Name                           [BLOCK_HEIGHT]
+EDR Block Height Tag Name                                 [EDR_BlockHeight]
+Offset interval start (negative count from 0)             [-120]
+Offset interval stop (positive count from 0)              [120]

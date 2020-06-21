@@ -1,0 +1,81 @@
+Program stripchart V3.0 11/30/2017
+
+Title  [Well YYYYY]
+
+Select drill rig filename by uncommenting (remove pound sign) on just one line
+# Drill Rig .csv Input Filename [/Users/Fred.Seymour/EDR_Data/190310_BatchTest/YYYYY_input_EDR_clean_clean_classify.csv]
+Drill Rig .csv Input Filename [/Users/Fred.Seymour/EDR_Data/190310_BatchTest/YYYYY_input_EDR_clean_clean_classify.csv]
+
+Stripchart Plot Output .pdf Filename Appendix (blank to skip) [_stripchart.pdf]
+First observation number to plot                              [1]
+Last observation number to plot (use -1 for all)              [-1]
+Number of observation for each strip chart                    [1000]
+
+Symbol size in chart                                          [0.4]
+Label size factor (value/(number of features))                [5]
+Maximum number of characters for y-label                      [15]
+Double height of bottom strip (Yes/No)                        [No]
+Convert to UTC timezone if UTC offset available (Yes/No)      [No]
+
+Feature/Columns for strip chart
+Reverse - reverse the numbers on the y-axis (Yes/No)
+Min - fixed minimum value for y-axis (blank for none)
+Max - fixed maximum value for y-axis (blank for none)                           
+Feature name               Reverse  Min      Max 
+[EDR_BlockHeight]          [No]     []       []
+[EDR_HoleDepth]            [Yes]    []       []
+[EDR_BitDepth]             [Yes]    []       []
+[EDR_HookLoad]             [No]     []       []
+[EDR_StandpipePressure]    [No]     []       []
+[EDR_RotaryRPM]            [No]     []       []
+[EDR_RotaryTorque]         [No]     []       []
+[rfvote]                   [No]     [0.0]    [1.0]
+
+Rig State feature for color coding [rig_state]
+
+Rig State feature color code and display parameters
+rig_state - the value of the rig state
+color     - selected color name
+pch       - selected plot symbol
+cex       - magnification factor for text
+ rig_state        color     pch    cex
+[Circulating]    [black]   [16]   [1.0]
+[Connecting]     [blue]    [16]   [1.0]
+[Other]          [Red]     [16]   [1.0]
+[RDrilling]      [green]   [16]   [1.0]
+[SDrilling]      [magenta] [16]   [1.0]
+[TrippingIn]     [cyan]    [16]   [1.0]
+[TrippingOut]    [yellow2] [16]   [1.0]
+[BackReaming]    [brown]   [16]   [1.0]
+[Reaming]        [orange]  [16]   [1.0]
+[TripInConnect]  [cyan4]   [16]   [1.0]
+[TripOutConnect] [yellow4] [16]   [1.0]
+
+Consolidate factor (non-numeric) feature categories/names/values
+feature   - factor feature/column for applying consolidation
+oldname   - old or redundant category/name/value
+newname   - new/consolidated category/name/value
+ feature          oldname                       newname
+[DrillingDesc]   [Test BOP]                    [Drill]
+[DrillingDesc]   [Directional Work]            [Run casing & cementing]
+[DrillingDesc]   [Condition mud & circulate]   [REMOVE TRIP N]
+
+Factor (non-numeric) feature category color code and display parameters
+feature   - factor feature/column for color coding
+name      - feature name
+color     - selected color name
+pch       - selected plot symbol
+cex       - magnification factor for text
+ feature        name                     color      pch     cex
+[DrillingDesc] [CLEAN RIG FLO]          [red]      [16]    [1.0]
+[DrillingDesc] [Cut off Drill Line]     [red]      [16]    [1.0]
+[DrillingDesc] [Drill]                  [green]    [16]    [1.0]
+[DrillingDesc] [HELD SAFETY S]          [red]      [16]    [1.0]
+[DrillingDesc] [LINE UP FOR C]          [red]      [16]    [1.0]
+[DrillingDesc] [Nipple up BOP]          [red]      [16]    [1.0]
+[DrillingDesc] [REMOVE ROT HE]          [red]      [16]    [1.0]
+[DrillingDesc] [REMOVE TRIP N]          [black]    [16]    [1.0]
+[DrillingDesc] [Rig Service]            [red]      [16]    [1.0]
+[DrillingDesc] [Run casing & cementing] [grey]     [16]    [1.0]
+[DrillingDesc] [Trips]                  [cyan]     [16]    [1.0]
+[DrillingDesc] [Wait on cement]         [grey]     [16]    [1.0]

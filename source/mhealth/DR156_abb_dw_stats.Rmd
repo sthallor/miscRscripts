@@ -1,0 +1,129 @@
+---
+title: "DR156 abb_dw data analysis"
+author: "Fred H Seymour"
+date: "May 4, 2016"
+output: html_document
+---
+
+A preliminary analysis of DR156 historian data from the abb_dw folder from early February to early May 2016 was performed.  This includes correlation heatmaps, histograms, pairwise scatterplots, and a k-means cluster analysis.
+
+```{r, echo=FALSE}
+options(width=96)
+options(warn=-1)
+dir <- '/Users/Fred.Seymour/Historian_Data/160503_MachineHealth/'
+filename <- '160503_DR156_abb_dw.csv'
+dt <- read.csv(paste0(dir,filename), nrow=-1)
+# shorten the column names
+colnames(dt)[2:ncol(dt)] <- substr(colnames(dt)[2:ncol(dt)],30,nchar(colnames(dt)[2:ncol(dt)]))
+for (i in 2:ncol(dt)) dt[,i] <- as.numeric(dt[,i])
+```
+
+Data columns were selected from historian based on visual inspection for significant information.  The csv file was downloaded with `r nrow(dt)` observations and `r ncol(dt)` columns.  Dates and times range from `r dt[1,1]` to `r dt[nrow(dt),1]`.  Some preliminary statistics for each variable are listed below:   
+
+
+```{r, echo=FALSE}
+print(data.frame(observations=apply(dt[2:ncol(dt)],2,function(x) length(which(!is.na(x)))),
+                 missing=apply(dt[2:ncol(dt)],2,function(x) length(which(is.na(x)))),
+                 min=apply(dt[,2:ncol(dt)],2,function(x) min(as.numeric(x),na.rm=T)),
+                 median=apply(dt[,2:ncol(dt)],2,function(x) median(as.numeric(x),na.rm=T)),
+                 max=apply(dt[,2:ncol(dt)],2,function(x) max(as.numeric(x),na.rm=T)),
+                 mean=apply(dt[,2:ncol(dt)],2,function(x) round(mean(as.numeric(x),na.rm=T),digits=1)),
+                 sd=apply(dt[,2:ncol(dt)],2,function(x) round(sd(as.numeric(x),na.rm=T),digits=1))))
+```
+
+###Look for highly correlated (redundant) variables that can be eliminated.
+
+This is done with a correlation 'heat map', where near white is near 100% correlated.  It is evident that pp\_temp1, pp\_temp2, pp\_temp3, and pp\_temp4 are nearly identical.  Also, frequency & speed and ro1 & ro2 have highly redundant information.  The 'redundant' columns (pp\_temp2, pp\_temp3, pp\_temp4, speed, and ro2) are droped and not included for futher analysis.  
+
+
+```{r, echo=FALSE, fig.width=5,fig.height=5}
+heatmap(cor(dt[,2:ncol(dt)],use="complete.obs"),
+        scale='none',main='DR156 abb_dw Correlation Heatmap')
+```
+
+
+###Look at histograms for each remaining variable.   
+
+```{r, echo=FALSE, fig.width=5,fig.height=5}
+# Keep only non-redundant (not very highly correlated) variables
+data.attributes <- c('igbt_temp','pp_temp1','rpm_ref',
+                     'output_voltage','ctrl_board_temp',
+                     'dc_bus_voltage','fan_on_time',
+                     'current','torque','power',
+                     'frequency','ro1')
+dateTime <- dt[,1]
+dt <- dt[,(colnames(dt) %in% data.attributes)]
+title <- sprintf('DR156 abb_dw %s to %s',substr(dateTime[1],1,6),
+                 substr(dateTime[length(dateTime)],1,6))
+# Look at histograms
+for (i in 1:ncol(dt)) {
+  hist(dt[,i],breaks=100,main=title,xlab=colnames(dt)[i])
+}
+```
+   
+   
+###Look at pairwise scatterplots.   
+
+```{r, echo=FALSE, fig.width=10,fig.height=11}
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- abs(cor(x, y,use="complete.obs"))
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste0(prefix, txt)
+  if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+count <- 50000
+sampleSelect <- sample(1:nrow(dt),count)
+dt1 <- dt[sampleSelect,]
+pairs(dt1, pch='.', gap=0.2,upper.panel=panel.cor, 
+      main=sprintf('%s, %i samples, correlations in upper Triangle',title,count))
+```
+
+
+###K-means cluster analysis
+
+The data in each column is normalized (subtract mean and divide by standard deviation) so that the scale for each variable is comparable.  Then the data in the `r ncol(dt1)` dimensional space is run through the k-means clustering algorithm which agglomerates the data into a fixed numbers of 'clusters' or groupings of the most proximate data points.  The effectiveness of the data clustering can be measured by the ratio of the between cluster sum of squares to the total sum of squares.  When a few clusters bring this ratio close to one, it means that there are clear distinct groupings for the data.  This is shown in red in the chart below with the number of clusters on the x-axis and the sum of squares ratio on the y-axis.  It is compared to a random data equivalent that is shown in black.  
+
+In this case, it indicates that most of the 'structure' in the data can be extracted with 10 to 15 groupings.  These clusters are likely to correspond to the rig state classifications and this can be verified with the complete datasets.   
+
+```{r, echo=FALSE, fig.width=10,fig.height=7}
+# K-means cluster analysis
+# Normalize the data scales
+dt1 <- dt[complete.cases(dt),]
+for (cn in data.attributes) {
+  # cat('\nLooking at ',cn,' mean=',mean(dt1[[cn]]),' sd=',sd(dt1[[cn]]))
+  dt1[[cn]][!is.na(dt1[[cn]])] <- (dt1[[cn]][!is.na(dt1[[cn]])] - 
+                                  mean(dt1[[cn]]))/sd(dt1[[cn]])
+}
+count <- 5000 # sample size for cluster analysis
+nstart <- 100   # number of starting clusters
+iter.max <- 50 # max number of kmeans iterations
+kcount <- c(2:10,12,14,16,18,20,23,26,29,32,35,40)
+
+# Create dataframe for kmean results
+kmean.res <- data.frame(centers=kcount,norm=rep(0,length(kcount)),rand=rep(0,length(kcount)))
+# Subsample indices of dt1 observations for kmean testing
+data.sample <- sample(1:nrow(dt1),count)
+# Random data corresponding to dt1 dataset
+krand <- matrix(rnorm((length(data.sample)*ncol(dt1))),nrow=length(data.sample),ncol=ncol(dt1))
+
+for (i in 1:length(kcount)) {
+  k <- kcount[i]
+  # cat('\nLooking at kclustering with k=',k,' clusters.')
+  ktest <- kmeans(dt1[data.sample,],centers=k,iter.max=iter.max,nstart=nstart)
+  kmean.res$norm[i] <- ktest$betweenss/ktest$totss
+  ktest <- kmeans(krand,centers=k,iter.max=iter.max,nstart=nstart)
+  kmean.res$rand[i] <- ktest$betweenss/ktest$totss
+}
+
+plot(kmean.res$centers,kmean.res$norm,type='l',col='red',ylim=c(0,1),
+     main=sprintf("DR156 K-means clustering with %i vars & %i samples",ncol(dt1),count),
+     ylab="between_cluster_SS/total_SS",
+     xlab="Cluster Count")
+lines(kmean.res$centers,kmean.res$rand,col='black')
+legend('bottomright',c('Drill Data','Random Data'),fill=c('red','black'))
+
+```

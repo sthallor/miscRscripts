@@ -1,0 +1,50 @@
+Real Time Rig Classify V3.0 Program Parameters 3/8/2019
+
+Title  [3/28/2019 testing new parameterized training model]
+
+Training Parameters Filename                       [C:/Users/Fred.Seymour/RCode/master/parms/dev/classify/trainRT.prm]
+Data cleaning Parameters Filename (blank for none) [C:/Users/Fred.Seymour/RCode/master/parms/dev/classify/dcleanRT.prm]
+
+Real Time ODBC Connect Name             [rig550]
+
+Directory for output data [C:/Users/Fred.Seymour/EDR_Data/190204_RTclassify_tests/190327_rig550/]
+Filename for log .txt output (blank for none)                     [] #log.txt]
+Filename for run to run summary log .csv output (blank for none)  [runlog.csv]
+Filename for results .csv output (blank for none)                 [results.csv]
+Filename for diagnostics .csv output (blank for none)             [diagnostics.csv]
+
+Suspend time between checking for input file update (seconds)     [2]
+Elapsed time program duration (hours)                             [0.02]
+Real time lag delay (seconds)                                     [15]
+Tolerance between current and previous SQL query for diagnostic   [1e-6]
+Append time stamp to output filenames (Yes/No)                    [No]
+Early save for run log, proportion of elapsed time (1 for none)   [1.0] 
+Verbose log file output (Yes/No)                                  [No]
+
+Output Time Epoch and rig_state code to database (Yes/No) [No]
+rig_state codes for sql output to database
+rig_state         code  
+[BackReaming]     [40]
+[Circulating]     [60]
+[Connecting]      [70]
+[Data_Incomplete] [0]
+[Error_In_Data]   [2]
+[Other]           [5]
+[RDrilling]       [90]
+[Reaming]         [50]
+[SDrilling]       [80]
+[TrippingIn]      [20]
+[TrippingOut]     [30]
+[TripInConnect]   [25]
+[TripOutConnect]  [35]
+
+Perform Post Processing Rig State Consolidation (Yes/No)         [Yes]
+Post Processing Consolidation Tests
+csn=Current State Name, csem=Current State Max Elapsed Minutes
+bsn=Before State Name, bsdm=Before State Distance Minutes
+asn=After State Name, asdm=After State Distance Minutes
+csnn=Current State New Name
+csn              csem    bsn              bsdm  asn               asdm  csnn (Oct 28, 2018) 
+[Other]          [1.0]   [Connecting]     [0.1] [Connecting]      [0.1] [Connecting] 
+[Circulating]    [0.2]   [RDrilling]      [0.1] [RDrilling]       [0.1] [RDrilling] 
+[Circulating]    [0.2]   [SDrilling]      [0.1] [SDrilling]       [0.1] [SDrilling]

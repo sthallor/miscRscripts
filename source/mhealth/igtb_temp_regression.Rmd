@@ -1,0 +1,112 @@
+---
+title: "IGTB Temperature Regression"
+author: "Fred H Seymour"
+date: "May 9, 2016"
+output: html_document
+---
+
+### Summary
+
+Following up on Sean Halloran's email from May 3 indicating the importance of IGBT temperatures, An analysis was performed to determine the factors that could be used to predict this value with data from the historian abb_dw folder of DR 156. 
+
+In the linear regression model all of the predictors were significant in predicting the IGBT temperature.  The prior IGBT temperature was the strongest indicator with a regression correlation of 0.971.  Using all of the non prior IGBT temperature related variables combined was on able to achieve a correlation of 0.878.  Combining all of the variables together achieved 0.980.
+
+```{r, echo=FALSE}
+dir <- '/Users/Fred.Seymour/Historian_Data/160503_MachineHealth/'
+filename <- '160505_DR156_Igbt_temp_regression_A_clean.csv'
+dt <- read.csv(paste0(dir,filename), nrow=-1)
+
+# shorten the column names
+colnames(dt)[2:9] <- substr(colnames(dt)[2:9],30,nchar(colnames(dt)[2:9]))
+colnames(dt)[10] <- substr(colnames(dt)[10],30,nchar(colnames(dt)[10]))
+```
+
+### The Data
+
+A total of `r nrow(dt)` observations were used spanning `r substr(dt$time[1],1,10)` to `r substr(dt$time[nrow(dt)],1,10)`.  Variables were selected from the abb_dw folder that had continuous value readings for the time period of interest.  Summary statistics on the variables are listed below.  
+
+There are some calculated fields:   
+
+timespan:  indicates the time interval between observations.  The data was run through dclean and all of the time intervals are 10 seconds.  This facilitated time series treatments such as rates of change calculations.   
+
+priorIgtb: the IGTB temperature from the prior interval.  Not surprisingly, this was the strongest predictor of the IGTB temperature.
+
+priorIgtbSlope: the temperature rate of change from the the IGBT temperature two intervals prior to one interval prior to the current IGTB temperature.
+
+kwatts: current times dc\_bus\_voltage divided by 1000.  This was considered as an indicator of the energy going into the system and contributing to the IGTB temperature.   
+
+```{r, echo=FALSE}
+options(width=108)
+dt$time <- as.character(dt$time)
+dt$time <- as.POSIXlt(dt$time,"%Y-%m-%d %H:%M:%S",tz="")
+for (i in 2:ncol(dt)) dt[,i] <- as.numeric(dt[,i])
+
+# calculates timespan between observations
+dt$timespan <- 0
+dt$timespan[1] <- as.numeric(difftime(dt$time[2],dt$time[1],units='secs'))
+dt$timespan[2:(nrow(dt)-1)] <- as.numeric(difftime(dt$time[3:nrow(dt)],
+                                                   dt$time[1:(nrow(dt)-2)],units='secs'))/2
+dt$timespan[nrow(dt)] <- as.numeric(difftime(dt$time[nrow(dt)],
+                                             dt$time[(nrow(dt)-1)],units='secs'))
+dt$timespan[dt$timespan<1] <- 1 # minimum allowed timespan value which is used as denominator
+
+# copies prior observation's igbt_temp
+dt$priorIgbt <- mean(dt$igbt_temp,na.rm=T)
+dt$priorIgbt[2:nrow(dt)] <- dt$igbt_temp[1:(nrow(dt)-1)]
+
+# calculates temperature rate of change for prior observation's igbt_temp
+dt$priorIgbtSlope <- 0
+dt$priorIgbtSlope[3:nrow(dt)] <- (dt$igbt_temp[2:(nrow(dt)-1)] - dt$igbt_temp[1:(nrow(dt)-2)])/
+                                  dt$timespan[2:(nrow(dt)-1)]
+
+# calculates watts going into system
+dt$kwatts <- dt$current * dt$dc_bus_voltage/1000
+
+print(data.frame(observations=apply(dt[2:ncol(dt)],2,function(x) length(which(!is.na(x)))),
+                 missing=apply(dt[2:ncol(dt)],2,function(x) length(which(is.na(x)))),
+                 min=apply(dt[,2:ncol(dt)],2,function(x) round(min(as.numeric(x),na.rm=T),digits=1)),
+                 median=apply(dt[,2:ncol(dt)],2,function(x) round(median(as.numeric(x),na.rm=T),digits=1)),
+                 max=apply(dt[,2:ncol(dt)],2,function(x) round(max(as.numeric(x),na.rm=T),digits=1)),
+                 mean=apply(dt[,2:ncol(dt)],2,function(x) round(mean(as.numeric(x),na.rm=T),digits=1)),
+                 sd=apply(dt[,2:ncol(dt)],2,function(x) round(sd(as.numeric(x),na.rm=T),digits=1))))
+```
+
+
+### Linear Regressions
+
+The first linear regression only includes the variable `r (regVar <- c('priorIgbt'))`.  This predictor alone has a 0.971 correleation from fitted to actual values.   
+
+```{r, echo=FALSE}
+options(width=108)
+lmp <- lm(igbt_temp~.,data=dt[,c('igbt_temp',regVar)])
+plot(lmp$fitted.values,lmp$fitted.values+lmp$residuals,pch='.',
+     main=sprintf('Linear Regression corr=%.3f',cor(lmp$fitted.values+lmp$residuals,lmp$fitted.values)),
+     xlab=sprintf('Fitted to (%s)',paste(regVar,collapse=',')),ylab='Actual = Fitted + Residuals')
+lines(c(min(lmp$fitted.values,na.rm=T),max(lmp$fitted.values,na.rm=T)),
+      c(min(lmp$fitted.values,na.rm=T),max(lmp$fitted.values,na.rm=T)),col='red')
+```
+
+The second linear regression includes all variables except for the prior IGBT temperature information.  These are `r (regVar <- c('current','dc_bus_voltage','frequency','output_voltage','power','speed','torque','hookload','kwatts'))`.   
+
+```{r, echo=FALSE}
+options(width=108)
+lmp <- lm(igbt_temp~.,data=dt[,c('igbt_temp',regVar)])
+plot(lmp$fitted.values,lmp$fitted.values+lmp$residuals,pch='.',
+     main=sprintf('Linear Regression corr=%.3f',cor(lmp$fitted.values+lmp$residuals,lmp$fitted.values)),
+     xlab=sprintf('Fitted to (%s)',paste(regVar,collapse=',')),ylab='Actual = Fitted + Residuals')
+lines(c(min(lmp$fitted.values,na.rm=T),max(lmp$fitted.values,na.rm=T)),
+      c(min(lmp$fitted.values,na.rm=T),max(lmp$fitted.values,na.rm=T)),col='red')
+```
+
+The third and final linear regression includes all variables.  These are `r (regVar <- c('priorIgbt','priorIgbtSlope','current','dc_bus_voltage','frequency','output_voltage','power','speed','torque','hookload','kwatts'))`.  The summary linear regression coefficient information is listed.  
+
+```{r, echo=FALSE}
+options(width=108)
+lmp <- lm(igbt_temp~.,data=dt[,c('igbt_temp',regVar)])
+plot(lmp$fitted.values,lmp$fitted.values+lmp$residuals,pch='.',
+     main=sprintf('Linear Regression corr=%.3f',cor(lmp$fitted.values+lmp$residuals,lmp$fitted.values)),
+     xlab=sprintf('Fitted or Predicted IGBT temperature'),ylab='Actual = Fitted + Residuals')
+lines(c(min(lmp$fitted.values,na.rm=T),max(lmp$fitted.values,na.rm=T)),
+      c(min(lmp$fitted.values,na.rm=T),max(lmp$fitted.values,na.rm=T)),col='red')
+summary(lmp)$coefficients
+```

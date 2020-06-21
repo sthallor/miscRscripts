@@ -1,0 +1,19 @@
+Flat File Handshake Real Time Rig Predict V3.0 Program Parameters 12/12/2017
+
+Title  [12/10/2017]
+
+Training Parameters Filename                       [C:/Users/Fred.Seymour/RCode/master/parms/dev/CRTpredict/predictTrain.prm]
+Data cleaning Parameters Filename (blank for none) [C:/Users/Fred.Seymour/RCode/master/parms/dev/CRTpredict/dcleanRT.prm]
+
+Directory for output data [C:/Users/Fred.Seymour/Rcode/TestData/CRTpredict/]
+Filename for predictor input .csv data                [input.csv]
+Filename for predictor output .csv result             [output.csv]
+Filename for log .txt output (blank for none)         [log.txt]
+Filename for results .csv output (blank for none)     [res.csv]
+Filename for diagnostics .csv output (blank for none) [diag.csv]
+
+Suspend time between checking for input file update (seconds)     [2]
+Elapsed time program duration (hours)                             [0.01]
+Alarm random forest tree count proportion cutoff                  [0.90]
+Append time stamp to output filenames (Yes/No)                    [No]
+Verbose log file output (Yes/No)                                  [Yes]

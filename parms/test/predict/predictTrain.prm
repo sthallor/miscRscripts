@@ -1,0 +1,60 @@
+Program Predict Train V3.0 3/14/2017
+
+Title  [Random Forest Training for High Value Alarm Predictions 4/17/2017]
+
+Select training data filename by uncommenting (remove pound sign) on one line
+Training Data Filename       [E:/Analytics/Rcode/TestData/predict/1702_rig140_clean.csv]
+
+Random Forest Model .bin Filename Appendix (blank to skip)         [_randomForestModel.bin]
+Program Output Log .txt Filename Appendix (blank to skip)          [_randomForestLog.txt]
+Sorted Predictor Importance .txt Filename Appendix (blank to skip) [_randomForestImportance.txt]
+
+Parameters for building calculated predictors
+Date and Time Column Name                          [time]
+Prediction Target Source Column Name               [igbt_temp]
+Calculated Prediction Target Column Name           [futureIgbtMax]
+Target alarm cutoff value                          [60]
+Future prediction time span (minutes)              [20]
+Past calculated predictor time span (minutes)      [20]
+Dominant observation time interval (seconds)       [10]
+
+Parameters for random forest training
+Number of observations used for training           [10000]
+Balance training above/below alarm cutoff (Yes/No) [Yes]
+ntree - number of Random Forest Trees              [300]
+mtry - number of predictors per decision           [3]
+do.trace - diagnostic tree interval                [25]
+Verbose log file output (Yes/No)                   [Yes]
+
+Source Predictors from input file
+[block_height]
+[dc_bus_voltage]
+[output_voltage]
+[current]
+[torque]
+[speed]
+[frequency]
+[hookload]
+[igbt_temp]
+
+All Predictors for Training/Predicting
+[igbt_tempRunMean]
+[igbt_tempRunSD]
+[igbt_temp]
+[deltaBlockHeightAbs]
+[kwattsRunMean]
+[kwattsRunSD]
+[dc_bus_voltageRunMean]
+[dc_bus_voltageRunSD]
+[currentRunMean]
+[currentRunSD] 
+[hookloadRunMean] 
+[hookloadRunSD] 
+[frequencyRunMean]
+[frequencyRunSD]
+[torqueRunMean]
+[torqueRunSD]
+[speedRunMean]
+[speedRunSD]
+[output_voltageRunMean]
+[output_voltageRunSD]

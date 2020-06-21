@@ -1,0 +1,59 @@
+Program compare V3.0 Program Parameters 2/18/2019
+
+Title  [test Rig 550 with 1hr offset Feb 18, 2019]
+
+Input file1 .csv name   [E:/Analytics/Rcode/TestData/compare/input_EDR_file_clean_diagnostic_test.csv]
+Input file2 .csv name   [E:/Analytics/Rcode/TestData/compare/rig550_diagnostics_190213162612.csv]
+
+Output log .txt Filename                   [E:/Analytics/Rcode/TestData/compare/BAT_vs_RT_offset_log.txt]
+Output numeric compare .csv name           [E:/Analytics/Rcode/TestData/compare/BAT_vs_RT_offset_numeric.csv]
+Output categories compare tables .csv name [E:/Analytics/Rcode/TestData/compare/BAT_vs_RT_offset_category.csv]
+Output combined selected data .csv name    [E:/Analytics/Rcode/TestData/compare/BAT_vs_RT_offset_combined.csv]
+Output selected compareplot .pdf name      [E:/Analytics/Rcode/TestData/compare/BAT_vs_RT_offset_compareplot.pdf]
+
+Time offset applied to File2 before comparison (seconds)   [-3600]
+Verbose logfile output (Yes/No)                            [Yes]
+
+                 File1            File2
+Dataset name     [BAT]            [RT] 
+Lineplot Colors  [blue]           [red]
+
+Plot symbol pch code (0=square, 1=circle, 2=triangle)      [1]
+Plot symbol cex size factor                                [0.5]  
+Add mismatch symbol to scatterplots & lineplots (Yes/No)   [Yes]
+Mismatch symbol pch code (3=+,4=x,8=*)                     [3]
+Mismatch symbol color                                      [black]
+Mismatch symbol size factor (cex)                          [.75]
+Add regression lines to scatterplots (Yes/No)              [Yes]
+Regression line color                                      [brown]
+Regression line type lty (2=dashed)                        [5]
+
+Combined compare dataset index minimum (1 for first)       [1]
+Combined compare dataset index maximum (-1 for last)       [-1]
+
+Classification Columns for Comparison
+Save - Yes/No for saving data from both file1 and file2 plus third column for matched classifications
+ColumnName    Save(Y/N)
+[rig_state]   [Yes]
+
+Numeric Columns for Comparison
+Save - Yes/No for saving matched data from both file1 and file2
+Scatterplot - Yes/No for creating a scatter plot of file1 vs file2 columns
+Lineplot - Yes/No for creating a lineplot of file1 vs file2 columns
+Min  - Min value for scatterplot (blank for min of both file1, file2 columns
+Max  - Max value for scatterplot (blank for max of both file1, file2 columns
+Reverse - Yes/No for reversing the line chart numbers on the y-axis
+ColumnName                  Save(Y/N)   Scatterplot(Y/N) Lineplot(Y/N)  Min     Max     Reverse
+[rfvote]                    [Y]         [N]              [N]            [0.0]   [1.0]   [N]
+[EDR_BlockHeight]           [Y]         [Y]              [Y]            []      []      [N]
+[EDR_HookLoad]              [Y]         [Y]              [Y]            []      []      [N]
+[EDR_WOB]                   [Y]         [Y]              [Y]            []      []      [N]
+[EDR_StandpipePressure]     [Y]         [Y]              [Y]            []      []      [N]
+[EDR_PumpSPMTotal]          [Y]         [Y]              [Y]            []      []      [N]
+[EDR_ROP]                   [Y]         [Y]              [Y]            []      []      [N]
+[EDR_RotaryRPM]             [Y]         [Y]              [Y]            []      []      [N]
+[EDR_RotaryTorque]          [Y]         [Y]              [Y]            []      []      [N]
+[EDR_HoleDepth]             [Y]         [Y]              [Y]            []      []      [Y]
+[EDR_BitDepth]              [Y]         [Y]              [Y]            []      []      [Y]
+
+

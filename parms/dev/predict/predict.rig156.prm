@@ -1,0 +1,17 @@
+Program Predict V3.0 4/04/2017
+
+Title  [IGBT Alarm Predictions 4/17/2017]
+
+Predict Training Parameters Filename [C:/Users/Fred.Seymour/Rcode/master/parms/dev/predict/predictTrain.prm]
+
+Select prediction data filename by uncommenting (remove pound sign) on one line
+Data Filename       [C:/Users/Fred.Seymour/Historian_Data/170302_MachineHealth/Rig140/170309_Rig140_All_clean.csv]
+# Data Filename       [C:/Users/Fred.Seymour/Rcode/TestData/predict/DR156_IGBT_temp_clean.csv]
+
+Program Output Log .txt Filename Appendix       (blank to skip) []
+Plot output .pdf Filename Appendix              (blank to skip) [_plot.pdf]
+
+Number of rows to load (-1 for all)     [50000]
+Prediction Processing chunk size        [10000]
+Minimum high events count for histogram [1]
+Strip Chart interval (0 to skip)        [10000]

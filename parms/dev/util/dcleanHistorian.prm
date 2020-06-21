@@ -1,0 +1,55 @@
+Program Data Clean V3.0 2/15/2017
+
+Title  [Historian 10/24/2016]
+
+Input Filenames (one file per line) for data cleaning
+[C:/Users/Fred.Seymour/Rcode/testdata/dclean/RawHistorianTesting.csv]
+# [C:/Users/Fred.Seymour/Rcode/testdata/dclean/RawHistorianData_Well48221.csv]
+
+Clean Data Output Filename Appendix  [_reshape_clean.csv]
+Program Output Log Filename Appendix []
+
+Input file is raw Historian data needing reshape (Yes/No)   [Yes]
+Time Column Name                                            [datetime]
+Average values over constant time interval (Yes/No)         [Yes]
+Constant time interval in seconds                           [10]
+Constant time interval offset in seconds                    [0]
+Max timespan (sec) for inserting missing observations       [600]
+Convert to UTC timezone if UTC offset available (Yes/No)    [No]
+Verbose logfile output (Yes/No)                             [Yes]
+
+Save all columns (Yes=all, No=save only selected columns)   [Yes]
+Global numeric value or code indicating missing value (NA)  [-999.25]
+Global numeric value below which set to missing (NA)        [-100000]
+Global numeric value above which set to missing (NA)        [100000]
+Min number of unique values to be considered continuous     [6]
+Min data density to be considered continuous                [0.05]
+Max timespan (sec) for interpolating continuous variables   [600]
+
+Non-standard predictor variable name conversion to standard names
+Option to overwrite standard predictor variable name if it already exists
+Non-standard name    Standard name               Overwrite
+[EDR_BitPosition]    [EDR_BitDepth]              [Yes]
+
+Convert Units Of Measure (UOM) to Standard Units (Yes/No)         [No]
+UOMType inserted into reshaped UOM column name(s) with historian data
+DColName            UOMColName    UOMType    InputUnit OutputUnit Formula
+[BLOCK_HEIGHT]      [UOM]         [length]   [feet]    [meters]   [meters = feet * 0.3048]  
+
+Selected columns for continuous variable cleaning parameters
+Column Name, Min=values below this set to NA, Floor=values below this set to floor
+Ceiling=values above this set to ceiling, Max=values above this set to NA
+MaxTimespan=max timespan for interpolating/extrapolating values
+NANumber=replace all NA values with numeric value listed (NA for none)
+Column Name                          Min       Floor      Ceiling    Max      MaxTimespan NANumber
+[ensign_ac_rig/abb_dw/speed]        [-10000]  [-10000]   [10000]    [10000]  [600]        [NA]
+[ensign_ac_rig/generator2/vb_l_l]   [-10000]  [-10000]   [10000]    [10000]  [600]        [NA]
+
+Selected columns for discrete variable cleaning parameters
+[ensign_ac_rig/console/dq/tilt_rev]
+[ensign_ac_rig/dw/dq/crownsaver_cnsl_reset]
+[ensign_ac_rig/sect_dh1/read/radfan1_cntrlsrc]
+[ensign_ac_rig/sect_dh5/read/sprsize4_grndflt]
+[ensign_ac_rig/bop/lower_piperam_cls_sw]
+[ensign_ac_rig/sect_dh3/read/sprsize2_phsimbl]
+[ensign_ac_rig/abb_mp1/read4]

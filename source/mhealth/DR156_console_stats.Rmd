@@ -1,0 +1,114 @@
+---
+title: "DR156 console data analysis"
+author: "Fred H Seymour"
+date: "May 4, 2016"
+output: html_document
+---
+
+A preliminary analysis of DR156 historian data from the alarm, anti-coll, avgrtd, and console folders from early February to early May 2016 was performed.  This includes correlation heatmaps, histograms, pairwise scatterplots for continous variables, and pairwise counts for zero-one variables, and a k-means cluster analysis.
+
+```{r, echo=FALSE}
+options(width=96)
+options(warn=-1)
+dir <- '/Users/Fred.Seymour/Historian_Data/160503_MachineHealth/'
+filename <- '160504_DR156_console.csv'
+dt <- read.csv(paste0(dir,filename), nrow=-1)
+# shorten the column names
+colnames(dt)[2:ncol(dt)] <- substr(colnames(dt)[2:ncol(dt)],23,nchar(colnames(dt)[2:ncol(dt)]))
+colnames(dt)[2] <- substr(colnames(dt)[2],8,nchar(colnames(dt)[2]))
+colnames(dt)[3] <- substr(colnames(dt)[3],7,nchar(colnames(dt)[3]))
+colnames(dt)[4:5] <- substr(colnames(dt)[4:5],11,nchar(colnames(dt)[4:5]))
+colnames(dt)[6:7] <- substr(colnames(dt)[6:7],8,nchar(colnames(dt)[6:7]))
+colnames(dt)[8:20] <- substr(colnames(dt)[8:20],12,nchar(colnames(dt)[8:20]))
+for (i in 2:ncol(dt)) dt[,i] <- as.numeric(dt[,i])
+```
+
+Data columns were selected from historian based on visual inspection for significant information.  The csv file was downloaded with `r nrow(dt)` observations and `r ncol(dt)` columns.  Dates and times range from `r dt[1,1]` to `r dt[nrow(dt),1]`.  Some preliminary statistics for each variable are listed below.  Note that all but five of the variables are binary with values of zero or one. 
+
+```{r, echo=FALSE}
+print(data.frame(observations=apply(dt[2:ncol(dt)],2,function(x) length(which(!is.na(x)))),
+                 missing=apply(dt[2:ncol(dt)],2,function(x) length(which(is.na(x)))),
+                 min=apply(dt[,2:ncol(dt)],2,function(x) min(as.numeric(x),na.rm=T)),
+                 median=apply(dt[,2:ncol(dt)],2,function(x) median(as.numeric(x),na.rm=T)),
+                 max=apply(dt[,2:ncol(dt)],2,function(x) max(as.numeric(x),na.rm=T)),
+                 mean=apply(dt[,2:ncol(dt)],2,function(x) round(mean(as.numeric(x),na.rm=T),digits=1)),
+                 sd=apply(dt[,2:ncol(dt)],2,function(x) round(sd(as.numeric(x),na.rm=T),digits=1))))
+```
+
+
+```{r, echo=FALSE, fig.width=5,fig.height=5}
+heatmap(cor(dt[,2:ncol(dt)],use="complete.obs"),
+        scale='none',main='DR156 console Correlation Heatmap')
+```
+
+###Histograms   
+
+```{r, echo=FALSE, fig.width=5,fig.height=5}
+# 2) Keep only non-redundant (not very highly correlated) variables
+data.attributes <- colnames(dt)[2:ncol(dt)]
+dateTime <- dt[,1]
+dt <- dt[,(colnames(dt) %in% data.attributes)]
+# mcor <- cor(dt[,2:ncol(dt)],use="complete.obs")
+# heatmap(mcor,scale='none',main='DR156 abb_dw Correlation Heatmap')
+title <- sprintf('DR156 console %s to %s',substr(dateTime[1],1,6),
+                 substr(dateTime[length(dateTime)],1,6))
+
+# 3 Look at histograms
+for (i in 1:ncol(dt)) {
+  hist(dt[,i],breaks=100,main=title,xlab=colnames(dt)[i])
+}
+```
+
+###Pairwise scatterplots for continuous variables.   
+
+```{r, echo=FALSE, fig.width=10,fig.height=11}
+# 4 look at pair plots with correlations
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- abs(cor(x, y,use="complete.obs"))
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste0(prefix, txt)
+  if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+count <- 50000
+sampleSelect <- sample(1:nrow(dt),count)
+dt1 <- dt[sampleSelect,]
+pairs(dt1[,c(1,2,5,6,7)], pch='.', gap=0.2,upper.panel=panel.cor,
+      main=sprintf('%s, %i samples, correlations in upper Triangle',title,count))
+```
+
+###Pairwise table counts for zero-one variables in percent.
+
+```{r,echo=FALSE}
+# 6 create table of 0,1 values in common
+tableValues <- data.frame(colA=NULL,colB=NULL,
+                        Zero_Zero=NULL,One_Zero=NULL,
+                        Zero_One=NULL,One_One=NULL)
+tableList <- c('dwks_zone_a','dwks_zone_b','dwks_gear_high',
+               'dwks_js_hst','dwks_js_lwr','dwks_prk_brk',
+               'tugr1_js_dwn','tugr2_js_dwn','wrench_dwn',
+               'dwks_aux','dwks_vfd_aud_alrmm',
+               'dwks_vfd_fault','dwks_zero_spd')
+
+cat('\n')
+for (i in 1:(length(tableList)-1)) {
+  colA <- tableList[i]
+  for (j in (i+1):length(tableList)) {
+    colB <- tableList[j]
+    values <- as.vector(table(dt[[colA]],dt[[colB]]))
+    if (length(values==4)) {
+      tableValues <- rbind(tableValues,
+                         data.frame(colA=colA,
+                                    colB=colB,
+                                    Zero_Zero=round(100*values[1]/sum(values)),
+                                    One_Zero=round(100*values[2]/sum(values)),
+                                    Zero_One=round(100*values[3]/sum(values)),
+                                    One_One=round(100*values[4]/sum(values))))
+    }
+  }
+}
+print(tableValues)
+```

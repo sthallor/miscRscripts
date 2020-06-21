@@ -1,0 +1,79 @@
+Program compare V3.0 Program Parameters 2/18/2019
+
+Title  [Lookahead times in dbuild Feb 18, 2019]
+
+Input file1 .csv name   [C:/Users/Fred.Seymour/EDR_Data/190204_RTclassify_tests/190207_batch_testing/381911_input_EDR_clean_diagnosticRT5m.csv]
+Input file2 .csv name   [C:/Users/Fred.Seymour/EDR_Data/190204_RTclassify_tests/190207_batch_testing/381911_input_EDR_clean_diagnosticRT0m.csv]
+
+Output log .txt Filename                   []
+Output numeric compare .csv name           [C:/Users/Fred.Seymour/EDR_Data/190204_RTclassify_tests/190207_batch_testing/5m_vs_0m_numeric.csv]
+Output categories compare tables .csv name [C:/Users/Fred.Seymour/EDR_Data/190204_RTclassify_tests/190207_batch_testing/5m_vs_0m_category.csv]
+Output combined selected data .csv name    [C:/Users/Fred.Seymour/EDR_Data/190204_RTclassify_tests/190207_batch_testing/5m_vs_0m_combined.csv]
+Output selected compareplot .pdf name      [] # [C:/Users/Fred.Seymour/EDR_Data/190204_RTclassify_tests/190207_batch_testing/5m_vs_0m_scatterplot.pdf]
+
+Time offset applied to File2 before comparison (seconds)   [0]
+Verbose logfile output (Yes/No)                            [Yes]
+
+                  File1             File2
+Dataset name     [BAT5m]          [BAT0m]
+Lineplot Colors  [blue]           [red]
+
+Plot symbol pch code (0=square, 1=circle, 2=triangle)      [1]
+Plot symbol cex size factor                                [0.5]  
+Add mismatch symbol to scatterplots & lineplots (Yes/No)   [Yes]
+Mismatch symbol pch code (3=+,4=x,8=*)                     [3]
+Mismatch symbol color                                      [black]
+Mismatch symbol size factor (cex)                          [.75]
+Add regression lines to scatterplots (Yes/No)              [Yes]
+Regression line color                                      [brown]
+Regression line type lty (2=dashed)                        [5]
+
+Combined compare dataset index minimum (1 for first)       [3751]
+Combined compare dataset index maximum (-1 for last)       [4000]
+
+Classification Columns for Comparison
+Save - Yes/No for saving data from both file1 and file2 plus third column for matched classifications
+ColumnName    Save(Y/N)
+[rig_state]   [Yes]
+
+Numeric Columns for Comparison
+Save - Yes/No for saving matched data from both file1 and file2
+Scatterplot - Yes/No for creating a scatter plot of file1 vs file2 columns
+Lineplot - Yes/No for creating a lineplot of file1 vs file2 columns
+Min  - Min value for scatterplot (blank for min of both file1, file2 columns
+Max  - Max value for scatterplot (blank for max of both file1, file2 columns
+Reverse - Yes/No for reversing the line chart numbers on the y-axis
+ColumnName                  Save(Y/N)   Scatterplot(Y/N) Lineplot(Y/N)  Min     Max     Reverse
+[rfvote]                    [Y]         [Y]              [N]            [0.0]   [1.0]   [N]
+[EDR_BlockHeight]           [Y]         [Y]              [Y]            []      []      [N]
+[EDR_HookLoad]              [Y]         [Y]              [Y]            []      []      [N]
+[EDR_WOB]                   [Y]         [Y]              [Y]            []      []      [N]
+[EDR_StandpipePressure]     [Y]         [Y]              [Y]            []      []      [N]
+[EDR_PumpSPMTotal]          [Y]         [Y]              [Y]            []      []      [N]
+[EDR_ROP]                   [Y]         [Y]              [Y]            []      []      [N]
+[EDR_RotaryRPM]             [Y]         [Y]              [Y]            []      []      [N]
+[EDR_RotaryTorque]          [Y]         [Y]              [Y]            []      []      [N]
+[EDR_HoleDepth]             [Y]         [Y]              [Y]            []      []      [Y]
+[EDR_BitDepth]              [Y]         [Y]              [Y]            []      []      [Y]
+[bitHoleDepthRatio]         [N]         [Y]              [Y]            []      []      [N]
+[holeDepthSmooth]           [N]         [Y]              [Y]            []      []      [Y]
+[deltaHoleDepthSmooth]      [Y]         [Y]              [Y]            []      []      [Y]
+[bitDepthSmooth]            [N]         [Y]              [Y]            []      []      [Y]
+[deltaBitDepthSmooth]       [Y]         [Y]              [Y]            []      []      [Y]
+[bitSpeed]                  [N]         [Y]              [Y]            []      []      [N]
+[bitDistFromHoleBottom]     [N]         [Y]              [Y]            []      []      [N]
+[deltaBitDepth]             [N]         [Y]              [Y]            []      []      [Y]
+[deltaHoleDepth]            [N]         [Y]              [Y]            []      []      [Y]
+[deltaBlockHeightAbs]       [Y]         [Y]              [Y]            []      []      [N]
+[blockHeightRunLengths]     [N]         [Y]              [Y]            []      []      [N]
+[blockHeightRunMean]        [N]         [Y]              [Y]            []      []      [N]
+[blockHeightRunSD]          [N]         [Y]              [Y]            []      []      [N]
+[hookLoadRunMean]           [N]         [Y]              [Y]            []      []      [N]
+[hookLoadRunSD]             [N]         [Y]              [Y]            []      []      [N]
+[standpipePressureRunMean]  [N]         [Y]              [Y]            []      []      [N]
+[standpipePressureRunSD]    [N]         [Y]              [Y]            []      []      [N]
+[rotaryRPMRunMean]          [N]         [Y]              [Y]            []      []      [N]
+[rotaryRPMRunSD]            [N]         [Y]              [Y]            []      []      [N]
+[rfv_Circulating]           [Y]         [Y]              [Y]            []      []      [N]
+[rfv_SDrilling]             [Y]         [Y]              [Y]            []      []      [N]
+

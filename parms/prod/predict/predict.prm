@@ -1,0 +1,18 @@
+Program Predict V3.0 4/26/2017
+
+Title  [IGBT Predict]
+
+Predict Training Parameters Filename [E:/Analytics/Rcode/190401_master/parms/prod/predict/predictTrain.prm]
+
+Select prediction data filename by uncommenting (remove pound sign) on one line
+Data Filename       [E:/Analytics/Rcode/TestData/predict/1702_rig140_clean.csv]
+
+Program Output Log .txt Filename Appendix       (blank to skip) [_log.txt]
+Plot Output .pdf Filename Appendix              (blank to skip) [_plot.pdf]
+Diagnostics Output .csv Filename Appendix       (blank to skip) [_diagnostic.csv]
+
+Number of rows to load (-1 for all)      [-1]
+Prediction Processing chunk size         [10000]
+Minimum high events count for histogram  [2]
+Positive Predictive Value f_score factor [1]
+Strip Chart interval (0 to skip)         [5000]

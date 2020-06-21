@@ -1,0 +1,14 @@
+Program predictStripchart V3.0 4/27/2017
+
+Title  [rig140]
+
+Select drill rig filename by uncommenting (remove pound sign) on just one line
+Drill Rig .csv Input Filename [C:/Users/Fred.Seymour/Historian_Data/170407_IGBT_temp_predict/RTrig140/1705D_clean.csv]
+
+Stripchart Plot Output .pdf Filename Appendix (blank to skip) []
+
+First observation number to plot                 [1]
+Last observation number to plot (use -1 for all) [-1]
+Number of observation for each strip chart       [1000]
+
+Target Alarm cutoff                              [60]

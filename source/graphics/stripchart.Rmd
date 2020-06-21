@@ -1,0 +1,12 @@
+---
+title: "Strip Charts"
+output: html_document
+---
+
+```{r, echo=FALSE, fig.width=11, fig.height=10}
+options(width=96)
+options(warn=-1)
+
+sourceDir <- "E:/Analytics/Rcode/190401_master/"
+source(paste0(sourceDir,"source/graphics/mainStripchart.R"))
+```

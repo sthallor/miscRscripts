@@ -1,0 +1,51 @@
+Real Time Rig Classify V3.0 Program Parameters 3/8/2019
+
+Title  [6/02/2017 for RTanalytics combining rig state & predict]
+
+Training Parameters Filename                       [E:/Analytics/Rcode/190401_master/parms/test/classify/trainRT.prm]
+Data cleaning Parameters Filename (blank for none) [E:/Analytics/Rcode/190401_master/parms/test/classify/dcleanRT.prm]
+
+Real Time ODBC Connect Name             [rig140]
+
+Directory for output data [E:/Analytics/Rcode/TestData/RTclassify/]
+Filename for log .txt output (blank for none)                     [rig140_log.txt]
+Filename for run to run summary log .csv output (blank for none)  [rig550_runlog.csv]
+Filename for results .csv output (blank for none)                 [rig140_results.csv]
+Filename for diagnostics .csv output (blank for none)             [rig140_diagnostics.csv]
+
+Suspend time between checking for input file update (seconds)     [2]
+Elapsed time program duration (hours)                             [0.02]
+Real time lag delay (seconds)                                     [25]
+Tolerance between current and previous SQL query for diagnostic   [1e-6]
+Append time stamp to output filenames (Yes/No)                    [No]
+Early save for run log, proportion of elapsed time (1 for none)   [1.0]
+Verbose log file output (Yes/No)                                  [No]
+
+Output Time Epoch and rig_state code to database (Yes/No) [No]
+rig_state codes for sql output to database
+rig_state         code  
+[BackReaming]     [40]
+[Circulating]     [60]
+[Connecting]      [70]
+[Data_Incomplete] [0]
+[Error_In_Data]   [2]
+[Other]           [5]
+[RDrilling]       [90]
+[Reaming]         [50]
+[SDrilling]       [80]
+[TrippingIn]      [20]
+[TrippingOut]     [30]
+
+
+Perform Post Processing Rig State Consolidation (Yes/No)         [Yes]
+Post Processing Consolidation Tests
+csn=Current State Name, csem=Current State Max Elapsed Minutes
+bsn=Before State Name, bsdm=Before State Distance Minutes
+asn=After State Name, asdm=After State Distance Minutes
+csnn=Current State New Name
+csn           csem    bsn            bsdm  asn           asdm  csnn
+[Other]       [1.0]   [Connecting]   [0.1] [Connecting]  [0.1] [Connecting]
+[Other]       [1.0]   [TrippingIn]   [0.1] [TrippingIn]  [0.1] [TrippingIn]
+[Other]       [1.0]   [TrippingOut]  [0.1] [Trippingout] [0.1] [Trippingout]
+[TrippingOut] [1.0]   [Other]        [0.1] [Other]       [0.1] [Other]
+[TrippingIn]  [1.0]   [Other]        [0.1] [Other]       [0.1] [Other]

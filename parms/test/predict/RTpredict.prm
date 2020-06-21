@@ -1,0 +1,24 @@
+Real Time Rig Predict V3.0 Program Parameters 5/08/2017
+
+Title  [5/08/2017]
+
+Training Parameters Filename                       [E:/Analytics/Rcode/190401_master/parms/test/predict/predictTrain.prm]
+Data cleaning Parameters Filename (blank for none) [E:/Analytics/Rcode/190401_master/parms/test/predict/dcleanRT.prm]
+
+Real Time ODBC Connect Name             [rig140]
+
+Directory for output data [E:/Analytics/Rcode/TestData/predict/]
+Filename for log .txt output (blank for none)         [rig140_log.txt]
+Filename for results .csv output (blank for none)     [rig140_results.csv]
+Filename for diagnostics .csv output (blank for none) [rig140_diagnostics.csv]
+
+Suspend time between checking for input file update (seconds)     [2]
+Elapsed time program duration (hours)                             [0.02]
+Alarm random forest tree count proportion cutoff                  [0.50]
+Real time lag delay (seconds)                                     [20]
+SQL query loading buffer time (seconds)                           [100]
+Append time stamp to output filenames (Yes/No)                    [No]
+Verbose log file output (Yes/No)                                  [No]
+Output Time Epoch and alarm code to database (Yes/No)             [No]
+Output random forest predicted max future value (Yes/No)          [No]
+Output proportion of rf tree values above alarm cutoff (Yes/No)   [No] 

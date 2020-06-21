@@ -1,0 +1,11 @@
+Program join V3.0 Program Parameters 2/15/2017
+
+Title  [Historian to EDR time join 2/15/2017]
+
+Input Historian .csv Filename   [E:/Analytics/Rcode/TestData/offset/offset_Historian_Rig774_reshape_clean.csv]
+Input EDR .csv Filename         [E:/Analytics/Rcode/TestData/offset/offset_EDR_Rig774_clean.csv]
+
+Output joined .csv Filename     [E:/Analytics/Rcode/TestData/offset/Historian_EDR_join_Rig774.csv]
+Output log .txt Filename        [E:/Analytics/Rcode/TestData/offset/Historian_EDR_join_log.txt]
+
+Time offset to be applied to Historian time records before join   [350]

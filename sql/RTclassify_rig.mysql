@@ -1,0 +1,31 @@
+/******************************************************************/
+/* SQL QUERY stored procedure call from Mark Kuziej Feb 24, 2017 */
+/* Designed to access rig database returning most recent 5 minutes for columns: */
+
+/* HoleDepth */
+/* BitDepth */
+/* BlockHeight */
+/* Hookload */
+/* StandpipePressure */
+/* RPM */
+/* mp1_spm */
+/* mp2_spm */
+/* WWeightOnBit */
+/* ROP */
+/* Torque */
+
+/* TorqueUOM */
+/* HoleDepthUOM */
+/* BitDepthUOM */
+/* RPM_UOM */
+/* HookloadUOM */
+/* ROP_UOM */
+/* WeightOnBitUOM */
+/* BlockHeightUOM */
+/* StandpipePressureUOM */
+/* MudPump1SPM_UOM */
+/* MudPump2SPM_UOM */
+
+/******************************************************************/
+
+CALL `get_last_5minutes_drilling_data`()

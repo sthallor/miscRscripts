@@ -1,0 +1,90 @@
+Program Data Clean V3.0 2/15/2017
+
+Title  [dclean for real time rig state classification 2/26/2019]
+
+Input Filenames (one file per line) for data cleaning
+[ignored.csv]
+
+Clean Data Output Filename Appendix  [ignored.csv]
+Program Output Log Filename Appendix [ignored.txt]
+
+Input file is raw Historian data needing reshape (Yes/No)   [No]
+Time Column Name                                            [tenseconds_epoch]
+Average values over constant time interval (Yes/No)         [Yes]
+Constant time interval in seconds                           [10]
+Constant time interval offset in seconds                    [0]
+Max timespan (sec) for inserting missing observations       [1000]
+Convert to UTC timezone if UTC offset available (Yes/No)    [No]
+Verbose logfile output (Yes/No)                             [No]
+
+Save all columns (Yes=all, No=save only selected columns)   [Yes]
+Global numeric value or code indicating missing value (NA)  [-999.25]
+Global numeric value below which set to missing (NA)        [-100000]
+Global numeric value above which set to missing (NA)        [100000]
+Min number of unique values to be considered continuous     [1]
+Min data density to be considered continuous                [0.05]
+Max timespan (sec) for interpolating continuous variables   [1250]
+
+Non-standard predictor variable name conversion to standard names
+Option to overwrite standard predictor variable name if it already exists
+Non-standard name                Standard name               Overwrite
+[historian_hole_depth]           [EDR_HoleDepth]             [Yes] # central database sql predictor names 
+[historian_bit_depth]            [EDR_BitDepth]              [Yes]
+[historian_blockheight]          [EDR_BlockHeight]           [Yes]
+[historian_hookload]             [EDR_HookLoad]              [Yes] 
+[historian_standpipe_pressure]   [EDR_StandpipePressure]     [Yes]
+[historian_rpm]                  [EDR_RotaryRPM]             [Yes]
+[historian_mp1_spm]              [EDR_PumpSPMTotal]          [Yes] 
+[historian_wob]                  [EDR_WOB]                   [Yes]
+[historian_rop]                  [EDR_ROP]                   [Yes]
+[historian_torque]               [EDR_RotaryTorque]          [Yes]
+[HoleDepth]                      [EDR_HoleDepth]             [Yes] # drill rig mysql predictor names
+[BitDepth]                       [EDR_BitDepth]              [Yes]
+[BlockHeight]                    [EDR_BlockHeight]           [Yes]
+[Hookload]                       [EDR_HookLoad]              [Yes] 
+[StandpipePressure]              [EDR_StandpipePressure]     [Yes]
+[RPM]                            [EDR_RotaryRPM]             [Yes]
+[mp1_spm]                        [EDR_PumpSPMTotal]          [Yes] 
+[WeightOnBit]                    [EDR_WOB]                   [Yes]
+[ROP]                            [EDR_ROP]                   [Yes]
+[Torque]                         [EDR_RotaryTorque]          [Yes]
+[BlockHeightUOM]                 [BlockHeight_UOM]           [Yes] # drill rig mysql UOM names
+[BitDepthUOM]                    [BitDepth_UOM]              [Yes]
+[HoleDepthUOM]                   [HoleDepth_UOM]             [Yes]
+[ROP_UOM]                        [OnBottomROP_UOM]           [Yes]
+[HookloadUOM]                    [Hookload_UOM]              [Yes]
+[WeightOnBitUOM]                 [WeightOnBit_UOM]           [Yes]
+[StandpipePressureUOM]           [PumpPressure_UOM]          [Yes]
+[TorqueUOM]                      [Torque_UOM]                [Yes]
+
+Convert Units Of Measure (UOM) to Standard Units (yes/No)       [No]
+UOMType inserted into reshaped UOM column name(s) with historian data
+DColName                   UOMColName         UOMType        InputUnit OutputUnit Formula
+[EDR_BlockHeight]          [BlockHeight_UOM]  [BlockHeight]  [feet]    [meters]   [meters = feet * 0.3048] 
+
+Selected columns for continuous variable cleaning parameters (Mar 7, 2019)
+Column Name, Min=values below this set to NA, Floor=values below this set to floor
+Ceiling=values above this set to ceiling, Max=values above this set to NA
+MaxTime=max timespan for interpolating/extrapolating values
+NANumber=replace all NA values with numeric value listed (NA for none)
+Column Name                Min       Floor      Ceiling    Max      MaxTimespan NANumber
+[EDR_BlockHeight]          [-1e6]    [-25000]   [1e6]      [1e6]    [1250]       [NA]
+[EDR_BitDepth]             [-1e6]    [0]        [100000]   [1e6]    [1250]       [NA]  
+[EDR_HoleDepth]            [-1e6]    [0]        [100000]   [1e6]    [1250]       [NA]
+[EDR_HookLoad]             [-1e6]    [0]        [100000]   [1e6]    [1250]       [NA]
+[EDR_WOB]                  [-1e6]    [0]        [100000]   [1e6]    [1250]       [NA]
+[EDR_ROP]                  [-1e6]    [0]        [1000]     [1e6]    [1250]       [NA]
+[EDR_RotaryRPM]            [-1e6]    [0]        [1000]     [1e6]    [1250]       [NA]
+[EDR_RotaryTorque]         [-1e6]    [0]        [100000]   [1e6]    [1250]       [NA]
+[EDR_StandpipePressure]    [-1e9]    [0]        [1e8]      [1e9]    [1250]       [NA]
+[EDR_Azimuth]              [-360]    [0]        [360]      [360]    [1250]       [NA]
+[EDR_Inclination]          [-360]    [0]        [180]      [360]    [1250]       [NA]
+[EDR_DifferentialPressure] [-1e9]    [-100000]  [100000]   [1e9]    [1250]       [NA]
+[EDR_PumpSPMTotal]         [-1e6]    [0]        [100000]   [1e6]    [1250]       [NA]
+[EDR_ToolFace]             [0]       [0]        [360]      [360]    [1250]       [-999]
+[WellEDRID]                [-100]    [0]        [1e12]     [1e12]   [1250]       [NA]
+
+
+Selected columns for discrete variable cleaning parameters
+[ensign_ac_rig/console/dq/tilt_rev]
+
